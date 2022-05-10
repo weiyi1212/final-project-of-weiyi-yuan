@@ -173,6 +173,45 @@ end
 total_inf(it,1)=length(find(Qviral(:,:,it)>1.0));
 end
 
+figure(1)
+set(gcf,'unit','centimeters','position',[3,2.0,15.5,15.0])%Sets the size of the picture window
+Nplot=4;it=[1,4,7,10];
+xlabelname={'(a) t=0 min';
+'(b) t=15 min';
+'(c) t=30 min';
+'(d) t=45 min'};
+Fontsize1=11;
+
+maxviral=0.0;
+for i=1:Nplot
+Qviralin=Qviral(:,:,it(i));
+[ilo,jlo]=find(Qviralin==qinfet);
+Qviralin(ilo,jlo)=0.0;
+maxviral=max(maxviral,max(max(Qviralin)));
+end
+maxviral=ceil(maxviral)*1.0+6;
+
+for i=1:Nplot
+Qviralin=Qviral(:,:,it(i));
+[ilo,jlo]=find(Qviralin==qinfet);
+Qviralin(ilo,jlo)=maxviral;
+ 
+[y_hua,x_hua]=find(Qviralin>0);
+z_hua=Qviralin(Qviralin>0);
+
+subplot(2,2,i)
+scatter(x_hua,y_hua,30,z_hua,'filled')
+hold on
+scatter(jlo,ilo,55,maxviral,'s','filled')
+colormap('jet')
+caxis([0.0 maxviral])
+xlim([0,W+1]);
+ylim([0,L+1]);
+box on
+xlabel(xlabelname{i},'FontName','arial','FontSize',Fontsize1);
+end
+colorbar('eastoutside','position',[0.93,0.108,0.017,0.815])
+set(gcf,'PaperPositionMode','auto')%Save by the size shown on the screen
 
 
 
